@@ -39,3 +39,29 @@ ssh -i ~/.ssh/id_rsa newuser@10.25.68.23
   - Mở PuTTYgen ➜ Load file `.ppk` ➜ "Conversions" ➜ "Export OpenSSH key".
 - **Từ PEM ➜ PPK**:
   - Mở PuTTYgen ➜ Load file `.pem` ➜ "Save private key".
+
+## Cách ngăn chặn SSH vào VPS bằng password, chỉ được SSH vào bằng private key
+
+- Vào file `/etc/ssh/sshd_config` và các **file inclucde** (nếu có):
+
+```bash
+nano /etc/ssh/sshd_config
+```
+
+và chỉnh lại (hoặc thêm) các trường sau:
+
+```text
+PermitRootLogin no
+PubkeyAuthentication yes
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+UsePAM yes
+PasswordAuthentication no
+```
+
+- Sau đó restart lại SSH:
+
+```bash
+systemctl restart ssh
+systemctl restart sshd
+```
